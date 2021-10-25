@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useDebugValue, useEffect, useState } from 'react';
 import { Container, Title, Input, Submit, Result, ResultContent, ResultLink, ResultSpam, ResultTitle } from './styles';
 import api from '../services/api';
 
@@ -6,6 +6,37 @@ export default function Home() {
     const [search, setSearch] = useState("")
     const [result, setResult] = useState([])
 
+    async function searchApi(list) {
+        const data = {
+            "word_lists": []
+        }
+        data.word_lists = list
+        // const response = await api.post()
+        console.log(data)
+    }
+
+    function render(pos, listagem) {
+        var listaux = []
+
+        while (listagem[pos] != ")" && pos < listagem.length) {
+            if (listagem[pos] == "(") {
+                var aux = render(pos + 1, listagem)
+                pos = aux[0]
+                listaux.push(aux[1])
+            }
+            else
+                listaux.push(listagem[pos])
+
+            pos++
+        }
+        return [pos, listaux]
+    }
+
+    async function lisat(listagem) {
+        var aux = render(0, listagem)
+        var list = aux[1]
+        searchApi(list)
+    }
 
     async function loadpostSearchs() {
         const replace0 = search.replaceAll("(", " ( ")
@@ -14,7 +45,6 @@ export default function Home() {
         const replace3 = replace2.replaceAll("  ", " ")
         const spliter = replace3.split(" ")
         const arr = spliter.filter(item => item != '')
-        console.log(arr)
         var listindex = []
         var listaspas = []
         var listPalavras = []
@@ -39,15 +69,8 @@ export default function Home() {
         for (var i = listaspas.length - 1; i >= 0; i--) {
             arr.splice(listaspas[i][0], listaspas[i][1] - listaspas[i][0] + 1, listPalavras[i])
         }
-
-        console.log(listindex)
-        console.log(listaspas)
-        console.log(listPalavras)
         console.log(arr)
-    }
-
-    async function teste() {
-        setResult([1, 2, 3])
+        await lisat(arr)
     }
 
     return (
@@ -58,7 +81,7 @@ export default function Home() {
                 value={search}
                 onChange={event => setSearch(event.target.value)}
             />
-            <Submit onClick={() => teste()} >PESQUISAR</Submit>
+            <Submit onClick={() => loadpostSearchs()} >PESQUISAR</Submit>
 
             {
                 result.length > 0 &&
