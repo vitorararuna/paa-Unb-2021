@@ -1,9 +1,10 @@
-import React, { useDebugValue, useEffect, useState } from 'react';
-import { Container, Title, Input, Submit, Result, ResultContent, ResultLink, ResultSpam, ResultTitle } from './styles';
+import React, { useState } from 'react';
+import { Container, Title, Input, Submit, Result, ResultContent, ResultLink, ResultSpam, ResultTitle, Loading } from './styles';
 import api from '../services/api';
 
 export default function Home() {
     const [search, setSearch] = useState("")
+    const [loading, setLoading] = useState(false)
     const [result, setResult] = useState([])
 
     async function searchApi(list) {
@@ -11,8 +12,12 @@ export default function Home() {
             "word_lists": []
         }
         data.word_lists = list
-        // const response = await api.post()
         console.log(data)
+        setLoading(true)
+        const response = await api.get()
+        console.log(response)
+        setLoading(false)
+
     }
 
     function render(pos, listagem) {
@@ -82,6 +87,9 @@ export default function Home() {
                 onChange={event => setSearch(event.target.value)}
             />
             <Submit onClick={() => loadpostSearchs()} >PESQUISAR</Submit>
+
+
+            {loading && <Loading>CARREGANDO RESULTADOS...</Loading>}
 
             {
                 result.length > 0 &&

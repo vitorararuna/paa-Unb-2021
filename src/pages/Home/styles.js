@@ -73,3 +73,10 @@ export const ResultLink = styled.p`
    color: white
    
 `;
+
+export const Loading = styled.p`
+    margin-top: 80px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #80C0D4
+`;
