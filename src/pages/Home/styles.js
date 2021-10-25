@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin: 80px auto 0; 
+  margin: 80px auto 0;
   max-width: 450px;
-  width: 100%; 
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,6 +12,7 @@ export const Container = styled.div`
 export const Title = styled.p`
     font-size: 30px;
     font-weight: bold;
+    font-family: Roboto;
 `;
 
 export const Input = styled.input`
@@ -19,6 +20,7 @@ export const Input = styled.input`
     height: 45px;
     background: #F7F7F7;
     border-radius: 5px;
+    font-family: Roboto;
 `;
 
 export const Submit = styled.button`
@@ -28,6 +30,8 @@ export const Submit = styled.button`
     background: #F7F7F7;
     border-radius: 5px;
     background: #59ACC7;
+    color: #F6F6F6;
+    font-family: Roboto;
 `;
 
 export const Result = styled.p`
@@ -43,6 +47,7 @@ export const Result = styled.p`
     text-align: center;
     align-items: center;
     align-self: center;
+    font-family: Roboto;
 `;
 
 export const ResultContent = styled.div`
@@ -53,30 +58,30 @@ export const ResultContent = styled.div`
     padding: 1px 10px 1px 10px;
     margin-bottom: 10px;
     border: 0.5px black solid;
-    
+    font-family: Roboto;
+
 `;
 
 export const ResultTitle = styled.p`
    font-size: 24px;
    font-weight: bold;
-   color: white
+   color: #F6F6F6
 `;
 
 export const ResultSpam = styled.p`
    font-size: 18px;
-   color: white
-   
+   color: #F6F6F6
 `;
 
 export const ResultLink = styled.p`
    font-size: 18px;
-   color: white
-   
+   color: #57A2BB
 `;
 
 export const Loading = styled.p`
     margin-top: 80px;
     font-size: 30px;
     font-weight: bold;
-    color: #80C0D4
+    color: #80C0D4;
+    font-family: Roboto;
 `;
