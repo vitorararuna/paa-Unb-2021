@@ -7,32 +7,16 @@ export default function Home() {
     const [result, setResult] = useState([])
 
 
-    async function loadSearchs() {
-        const words = {
-            listWords: [],
-        };
-
-        const spliter = await search.split(" ")
-        spliter.map(s => words.listWords.push(s))
-        console.log(words)
-
-        const response = await api.get()
-        await console.log(response.data.items)
-    }
-
     async function loadpostSearchs() {
-        const data = {
-            "meta": {
-                "keywords": {
-                    "keyword1": "python"
-                }
-            },
-            "callback": "parse_item",
-            "spider_name": "stackcrawler"
-        }
-        console.log(data.meta)
-        const response = await api.post('/', data)
-        await console.log(response)
+        const replace0 = search.replaceAll("(", " ( ")
+        const replace1 = replace0.replaceAll(")", " ) ")
+        const replace2 = replace1.replaceAll('"', ' " ') 
+        const replace3 = replace2.replaceAll('"', ' " ')
+        const replace4 = replace3.replaceAll("  ", " ")
+        const spliter = replace4.split(" ")
+        const arr = spliter.filter(item => item != '')
+        console.log(arr)
+
     }
 
     return (
