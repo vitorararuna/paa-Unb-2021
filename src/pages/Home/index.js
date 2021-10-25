@@ -10,13 +10,44 @@ export default function Home() {
     async function loadpostSearchs() {
         const replace0 = search.replaceAll("(", " ( ")
         const replace1 = replace0.replaceAll(")", " ) ")
-        const replace2 = replace1.replaceAll('"', ' " ') 
-        const replace3 = replace2.replaceAll('"', ' " ')
-        const replace4 = replace3.replaceAll("  ", " ")
-        const spliter = replace4.split(" ")
+        const replace2 = replace1.replaceAll('"', ' " ')
+        const replace3 = replace2.replaceAll("  ", " ")
+        const spliter = replace3.split(" ")
         const arr = spliter.filter(item => item != '')
         console.log(arr)
+        var listindex = []
+        var listaspas = []
+        var listPalavras = []
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == '"') {
+                listindex.push(i)
+            }
+        }
+        for (var i = 0; i < listindex.length; i++) {
+            if (i % 2 == 0) {
+                listaspas.push([listindex[i], listindex[i + 1]])
+            }
+        }
+        for (var i = 0; i < listaspas.length; i++) {
+            var nome = ''
+            for (var j = listaspas[i][0] + 1; j < listaspas[i][1]; j++) {
+                if (j == listaspas[i][1] - 1) { nome += `${arr[j]}` }
+                else { nome += `${arr[j]} ` }
+            }
+            listPalavras.push(nome)
+        }
+        for (var i = listaspas.length - 1; i >= 0; i--) {
+            arr.splice(listaspas[i][0], listaspas[i][1] - listaspas[i][0] + 1, listPalavras[i])
+        }
 
+        console.log(listindex)
+        console.log(listaspas)
+        console.log(listPalavras)
+        console.log(arr)
+    }
+
+    async function teste() {
+        setResult([1, 2, 3])
     }
 
     return (
@@ -27,7 +58,7 @@ export default function Home() {
                 value={search}
                 onChange={event => setSearch(event.target.value)}
             />
-            <Submit onClick={() => loadpostSearchs()} >PESQUISAR</Submit>
+            <Submit onClick={() => teste()} >PESQUISAR</Submit>
 
             {
                 result.length > 0 &&
