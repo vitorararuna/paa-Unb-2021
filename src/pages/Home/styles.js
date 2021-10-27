@@ -75,7 +75,7 @@ export const ResultSpam = styled.p`
 
 export const ResultLink = styled.p`
    font-size: 18px;
-   color: #57A2BB
+   color: #fff
 `;
 
 export const Loading = styled.p`
