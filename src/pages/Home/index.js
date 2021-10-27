@@ -57,7 +57,12 @@ export default function Home() {
         }
         data.words_list = list
         console.log(data)
-        await axios.post('https://paa-backend-webcrawler.herokuapp.com/questions', data).then((response) => setResult(response.data)).catch((err) => console.log("erro:", err))
+        await axios.post('https://paa-backend-webcrawler.herokuapp.com/questions', data)
+            .then((response) => {
+                setResult(response.data)
+                setLoading(false)
+            })
+            .catch((err) => console.log("erro:", err))
         // setLoading(false)
 
     }
