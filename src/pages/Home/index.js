@@ -53,31 +53,28 @@ const Home = () => {
     return [position, listaux];
   };
 
-  const searchApi = async (list) => {
-    console.log(list);
+  const searchApi = async (data_tree) => {
     setLoading(true);
     const data = {
-      words_list: [],
+      data_tree: data_tree,
     };
-    data.words_list = list;
-    console.log(data);
     await api
       .post("/questions", data)
       .then((response) => {
         setResult(response.data);
         setLoading(false);
       })
-      .catch((err) => console.log("erro:", err));
-    // setLoading(false)
+      .catch((error) => console.error(error));
   };
 
   const loadPostSearchs = async () => {
-    const replace0 = search.replaceAll("(", " ( ");
-    const replace1 = replace0.replaceAll(")", " ) ");
-    const replace2 = replace1.replaceAll('"', ' " ');
-    const replace3 = replace2.replaceAll("  ", " ");
-    const spliter = replace3.split(" ");
-    const arr = spliter.filter((item) => item !== "");
+    const arr = search
+      .replaceAll("(", " ( ")
+      .replaceAll(")", " ) ")
+      .replaceAll('"', ' " ')
+      .replaceAll("  ", " ")
+      .split(" ")
+      .filter((item) => item !== "");
     let listindex = [];
     let listaspas = [];
     let listPalavras = [];
@@ -109,7 +106,6 @@ const Home = () => {
         listPalavras[i]
       );
     }
-    console.log(arr);
     searchApi(loadTree(0, arr, [])[1]);
     for (let i = listaspas.length - 1; i >= 0; i--) {
       arr.splice(
@@ -118,8 +114,6 @@ const Home = () => {
         listPalavras[i]
       );
     }
-    console.log(arr);
-    // await lisat(arr);
   };
 
   return (
@@ -132,8 +126,6 @@ const Home = () => {
         onChange={(event) => setSearch(event.target.value)}
       />
       <Submit onClick={() => loadPostSearchs()}>PESQUISAR</Submit>
-
-      {loading && <Loading>CARREGANDO RESULTADOS...</Loading>}
 
       {loading && <Loading>CARREGANDO RESULTADOS...</Loading>}
 
