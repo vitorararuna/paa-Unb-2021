@@ -5,12 +5,12 @@ import {
   Input,
   Submit,
   ResultContent,
-  ResultLink,
-  ResultSpam,
+  ResultUrl,
+  ResultBody,
   ResultTitle,
   Loading,
 } from "./styles";
-import api from "../services/api";
+import api from "../../services/api";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -127,28 +127,16 @@ const Home = () => {
       />
       <Submit onClick={() => loadPostSearchs()}>PESQUISAR</Submit>
 
-      {loading && <Loading>CARREGANDO RESULTADOS...</Loading>}
+      {loading && <Loading>CARREGANDO RESULTADOS ...</Loading>}
 
       {result.map((item) => (
         <div key={item.id}>
           <ResultContent>
             <ResultTitle>{item.title}</ResultTitle>
-            <ResultSpam>{item.body}</ResultSpam>
+            <ResultBody>{item.body}</ResultBody>
             <a href={`https://stackoverflow.com${item.url}`}>
-              <ResultLink>Acessar Página</ResultLink>
+              <ResultUrl>Acessar Página</ResultUrl>
             </a>
-          </ResultContent>
-        </div>
-      ))}
-
-      {result.map((r) => (
-        <div key={r}>
-          <ResultContent>
-            <ResultTitle>TÍTULO DA PÁGINA</ResultTitle>
-            <ResultSpam>
-              ”Trecho do texto com a palavra chave ou expressão...”
-            </ResultSpam>
-            <ResultLink>HTTP://LINK.COM</ResultLink>
           </ResultContent>
         </div>
       ))}
