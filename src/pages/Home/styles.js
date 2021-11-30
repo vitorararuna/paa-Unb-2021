@@ -1,87 +1,73 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin: 80px auto 0;
-  max-width: 450px;
-  width: 100%;
   display: flex;
+  margin: 5% auto;
+  width: 33%;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  color: whitesmoke;
 `;
 
 export const Title = styled.p`
-    font-size: 30px;
-    font-weight: bold;
-    font-family: Roboto;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1rem 0;
 `;
 
 export const Input = styled.input`
-    width: 500px;
-    height: 45px;
-    background: #F7F7F7;
-    border-radius: 5px;
-    font-family: Roboto;
-`;
+  width: 100%;
+  padding: 0 2rem;
+  height: 3rem;
+  border-radius: 2rem;
+  color: whitesmoke;
+  background-color: #222;
+  font-size: large;
+  border: 0.1rem solid whitesmoke;
+  `;
 
 export const Submit = styled.button`
-    margin-top: 5px;
-    width: 509px;
-    height: 45px;
-    background: #F7F7F7;
-    border-radius: 5px;
-    background: #59ACC7;
-    color: #F6F6F6;
-    font-family: Roboto;
-`;
-
-export const Result = styled.p`
-    margin-top: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding: 7px;
-    background-color: #80C0D4;
-    border-radius: 5px;
-    width: 509px;
-    height: 26px;
-    text-align: center;
-    align-items: center;
-    align-self: center;
-    font-family: Roboto;
-`;
+  margin-top: 2rem;
+  width: auto;
+  padding: 0 2rem;
+  height: 3rem;
+  background-color: #222;
+  border-radius: 1rem;
+  color: whitesmoke;
+  font-weight: bold;
+  font-size: 1.5rem;
+  border: 0.1rem solid whitesmoke;
+  `;
 
 export const ResultContent = styled.div`
-    width: 585px;
-    height: auto;
-    background: #80C0D4;
-    border-radius: 20px;
-    padding: 1px 10px 1px 10px;
-    margin-bottom: 10px;
-    border: 0.5px black solid;
-    font-family: Roboto;
-
+  width: 100%;
+  height: auto;
+  background: #222;
+  border-radius: 2rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 0.2em solid black;
 `;
 
 export const ResultTitle = styled.p`
-   font-size: 24px;
-   font-weight: bold;
-   color: #F6F6F6
+  font-size: 2em;
+  font-weight: bold;
 `;
 
-export const ResultSpam = styled.p`
-   font-size: 18px;
-   color: #F6F6F6
+export const ResultBody = styled.p`
+  font-size: 1.5em;
 `;
 
-export const ResultLink = styled.p`
-   font-size: 18px;
-   color: #fff
+export const ResultUrl = styled.p`
+  font-size: 1.5em;
+  color: cyan;
+  font-weight: underline;
 `;
 
 export const Loading = styled.p`
-    margin-top: 80px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #80C0D4;
-    font-family: Roboto;
+  margin-top: 2em;
+  font-size: 2em;
+  font-weight: bold;
 `;

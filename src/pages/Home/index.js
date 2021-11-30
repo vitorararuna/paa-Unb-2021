@@ -1,137 +1,147 @@
-import React, { useState } from 'react';
-import { Container, Title, Input, Submit, Result, ResultContent, ResultLink, ResultSpam, ResultTitle, Loading } from './styles';
-import axios from 'axios';
+import React, { useState } from "react";
+import {
+  Container,
+  Title,
+  Input,
+  Submit,
+  ResultContent,
+  ResultUrl,
+  ResultBody,
+  ResultTitle,
+  Loading,
+} from "./styles";
+import api from "../../services/api";
 
-export default function Home() {
-    const [search, setSearch] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [result, setResult] = useState([])
+const Home = () => {
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState([]);
 
-    function loadTree(pos, listagem, buffer) {
-        var listaux = []
-        var half = 0
+  const loadTree = (position, listing, buffer) => {
+    let listaux = [];
+    let half = 0;
 
-        if (buffer.length > 0)
-            listaux.push(buffer)
-
-        while (listagem[pos] != ")" && pos < listagem.length) {
-            if (half == 0) {
-                if (listagem[pos] == "and" || listagem[pos] == "or") {
-                    half = 1
-                    listaux.push(listagem[pos])
-                }
-                else if (listagem[pos] == "(") {
-                    var aux = loadTree(pos + 1, listagem, [])
-                    pos = aux[0]
-                    listaux.push(aux[1])
-                }
-                else
-                    listaux.push(listagem[pos])
-            }
-            else {
-                if (listagem[pos] == "and" || listagem[pos] == "or") {
-                    var aux = loadTree(pos, listagem, listaux)
-                    pos = aux[0]
-                    listaux = aux[1]
-                }
-                else if (listagem[pos] == "(") {
-                    var aux = loadTree(pos + 1, listagem, [])
-                    pos = aux[0]
-                    listaux.push(aux[1])
-                }
-                else
-                    listaux.push(listagem[pos])
-            }
-
-            pos++
-        }
-
-        return [pos, listaux]
+    if (buffer.length > 0) {
+      listaux.push(buffer);
     }
 
-    async function searchApi(list) {
-        console.log(list)
-        setLoading(true)
-        const data = {
-            "words_list": []
-        }
-        data.words_list = list
-        console.log(data)
-        await axios.post('https://paa-backend-webcrawler.herokuapp.com/questions', data)
-            .then((response) => {
-                setResult(response.data)
-                setLoading(false)
-            })
-            .catch((err) => console.log("erro:", err))
-        // setLoading(false)
+    while (listing[position] !== ")" && position < listing.length) {
+      if (half === 0) {
+        if (listing[position] === "and" || listing[position] === "or") {
+          half = 1;
+          listaux.push(listing[position]);
+        } else if (listing[position] === "(") {
+          let aux = loadTree(position + 1, listing, []);
+          position = aux[0];
+          listaux.push(aux[1]);
+        } else listaux.push(listing[position]);
+      } else {
+        if (listing[position] === "and" || listing[position] === "or") {
+          let aux = loadTree(position, listing, listaux);
+          position = aux[0];
+          listaux = aux[1];
+        } else if (listing[position] === "(") {
+          let aux = loadTree(position + 1, listing, []);
+          position = aux[0];
+          listaux.push(aux[1]);
+        } else listaux.push(listing[position]);
+      }
 
+      position++;
     }
 
+    return [position, listaux];
+  };
 
-    async function loadpostSearchs() {
-        const replace0 = search.replaceAll("(", " ( ")
-        const replace1 = replace0.replaceAll(")", " ) ")
-        const replace2 = replace1.replaceAll('"', ' " ')
-        const replace3 = replace2.replaceAll("  ", " ")
-        const spliter = replace3.split(" ")
-        const arr = spliter.filter(item => item != '')
-        var listindex = []
-        var listaspas = []
-        var listPalavras = []
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] == '"') {
-                listindex.push(i)
-            }
-        }
-        for (var i = 0; i < listindex.length; i++) {
-            if (i % 2 == 0) {
-                listaspas.push([listindex[i], listindex[i + 1]])
-            }
-        }
-        for (var i = 0; i < listaspas.length; i++) {
-            var nome = ''
-            for (var j = listaspas[i][0] + 1; j < listaspas[i][1]; j++) {
-                if (j == listaspas[i][1] - 1) { nome += `${arr[j]}` }
-                else { nome += `${arr[j]} ` }
-            }
-            listPalavras.push(nome)
-        }
-        for (var i = listaspas.length - 1; i >= 0; i--) {
-            arr.splice(listaspas[i][0], listaspas[i][1] - listaspas[i][0] + 1, listPalavras[i])
-        }
-        console.log(arr)
-        searchApi(loadTree(0, arr, [])[1])
+  const searchApi = async (data_tree) => {
+    setLoading(true);
+    const data = {
+      data_tree: data_tree,
+    };
+    await api
+      .post("/questions", data)
+      .then((response) => {
+        setResult(response.data);
+        setLoading(false);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const loadPostSearchs = async () => {
+    const arr = search
+      .replaceAll("(", " ( ")
+      .replaceAll(")", " ) ")
+      .replaceAll('"', ' " ')
+      .replaceAll("  ", " ")
+      .split(" ")
+      .filter((item) => item !== "");
+    let listindex = [];
+    let listaspas = [];
+    let listPalavras = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === '"') {
+        listindex.push(i);
+      }
     }
+    for (let i = 0; i < listindex.length; i++) {
+      if (i % 2 === 0) {
+        listaspas.push([listindex[i], listindex[i + 1]]);
+      }
+    }
+    for (let i = 0; i < listaspas.length; i++) {
+      let nome = "";
+      for (let j = listaspas[i][0] + 1; j < listaspas[i][1]; j++) {
+        if (j === listaspas[i][1] - 1) {
+          nome += `${arr[j]}`;
+        } else {
+          nome += `${arr[j]} `;
+        }
+      }
+      listPalavras.push(nome);
+    }
+    for (let i = listaspas.length - 1; i >= 0; i--) {
+      arr.splice(
+        listaspas[i][0],
+        listaspas[i][1] - listaspas[i][0] + 1,
+        listPalavras[i]
+      );
+    }
+    searchApi(loadTree(0, arr, [])[1]);
+    for (let i = listaspas.length - 1; i >= 0; i--) {
+      arr.splice(
+        listaspas[i][0],
+        listaspas[i][1] - listaspas[i][0] + 1,
+        listPalavras[i]
+      );
+    }
+  };
 
+  return (
+    <Container>
+      <Title>PAA 2021/1 - PROJETO DA DISCIPLINA</Title>
+      <Title>STACK OVERFLOW WEB CRAWLER</Title>
+      <Input
+        placeholder="Digite sua pesquisa"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+      />
+      <Submit onClick={() => loadPostSearchs()}>PESQUISAR</Submit>
 
-    return (
-        <Container>
-            <Title>PROJETO PAA UnB-2021</Title>
-            <Input
-                placeholder="Digite sua pesquisa"
-                value={search}
-                onChange={event => setSearch(event.target.value)}
-            />
-            <Submit onClick={() => loadpostSearchs()} >PESQUISAR</Submit>
+      {loading && <Loading>CARREGANDO RESULTADOS ...</Loading>}
 
+      {result.map((item) => (
+        <div key={item.id}>
+          <ResultContent>
+            <ResultTitle>{item.title}</ResultTitle>
+            <ResultBody>{item.body}</ResultBody>
+            <a href={`https://stackoverflow.com${item.url}`}>
+              <ResultUrl>Acessar Página</ResultUrl>
+            </a>
+          </ResultContent>
+        </div>
+      ))}
+    </Container>
+  );
+};
 
-            {loading && <Loading>CARREGANDO RESULTADOS...</Loading>}
-
-            {
-                result.length > 0 &&
-                <Result>RESULTADOS DA PESQUISA:</Result>
-            }
-
-            {result.map(item => (
-                <div key={item.id}>
-                    <ResultContent>
-                        <ResultTitle>{item.title}</ResultTitle>
-                        <ResultSpam>{item.body}</ResultSpam>
-                        <a href={`https://stackoverflow.com${item.url}`}><ResultLink>Acessar Página</ResultLink></a>
-                    </ResultContent>
-                </div>
-            ))}
-
-        </Container>
-    );
-}
+export default Home;
